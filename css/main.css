@@ -1,0 +1,12 @@
+body {
+	text-align: center;
+}
+
+h1, 
+h5 {
+display: inline-block;
+}
+
+li {
+	display: inline;
+}

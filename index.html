@@ -1,0 +1,72 @@
+<html>
+<head>
+	<title>Hangman Quotes</title>
+
+	<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+
+</head>
+<body>
+	
+	<div class='container-fluid'>
+		<div class='row'>
+			<div class='col-sm-12'>
+				<h1>Hangman</h1>
+				<h5>With Quotes</h5>
+			</div>
+		</div>
+
+		<div class='row'>
+			<div class='col-sm-12'>
+				<h3 id='quoted'></h3>
+			</div>
+		</div>
+		<!-- row -->
+
+		<div class='row'>
+			<div class='col-sm-12'>
+				<div id="chosen">
+					<form>
+						<div class='form-group'></div>
+							<label for='userInput'>Choose Your Letter:</label>
+							<br>
+							<input type='text' id='userInput' placeholder='letter'>
+						</div>
+
+						<button type='button' id='guess'>Guess</button>
+						<button type='button' id='reset'>Reset</button>
+				</form>
+				</div>
+			</div>
+		</div>
+		<!-- row -->
+
+		<div class='row'>
+			<div class='col-xs-12 col-sm-6'>
+				<p id='lives'></p>
+				<div id='used'>
+					<p>You have already tried these letters:</p>
+					<span></span>
+				</div>
+			</div>
+
+			<div class='col-xs-12 col-sm-6'>
+				<div id="man">
+					<p>{{Where the hangman goes}}</p>
+				</div>
+			</div>
+		</div>
+		<!-- row -->
+
+	</div>
+	<!-- container-fluid -->
+	
+
+	<!-- Scripts -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src='js/main.js'></script>
+</body>
+</html>
