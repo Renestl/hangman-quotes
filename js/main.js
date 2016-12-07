@@ -7,7 +7,7 @@ var game = {
 	quoteLetters:[],
 	quoteLettersPlaceholder: [],
 	goodLetters: [],
-	triedLetters: [],
+	badLetters: [],
 	placeholder: '_',
 	lives: 10, // should be 10
 	currentLetter: '',
@@ -23,7 +23,7 @@ function gameStart() {
 }
 
 function quoteSplit() {
-	game.quoteLetters = game.quote.toLowerCase().split('');
+	game.quoteLetters = game.quote.toUpperCase().split('');
 
 	for(var i = 0; i < game.quoteLetters.length; i++) {
 		if (game.quoteLetters[i] !== " ") {
@@ -42,44 +42,66 @@ function numLives() {
 	$('#lives').html('You have ' + game.lives + ' lives left');
 }
 
-function reset() {
-	game.triedLetters = [];
-	game.lives = 10; // should be 10
-}
-
 function userInput() {
 	$('#guess').click(function() {
-		game.currentLetter = $('#userInput').val().toLowerCase();
+		game.currentLetter = $('#userInput').val().toUpperCase();
 		
-		compareInput();
+		repeatLetter();
 	});
 }
 
 function compareInput() {
-
 	for (i = 0; i < game.quoteLetters.length; i++){
 
-		if (game.quoteLetters[i] === game.currentLetter) {
+		if (game.currentLetter === game.quoteLetters[i]) {
 			game.quoteLettersPlaceholder[i] = game.quoteLetters[i].replace(game.placeholder, game.currentLetter);
-			game.goodLetters.push(game.currentLetter);
+			
+			if(game.goodLetters.indexOf(game.currentLetter) === -1) {
+				game.goodLetters.push(game.currentLetter);
+			} 
 		} 
+		else if (game.currentLetter !== game.quoteLetters[i] && game.quoteLetters.indexOf(game.currentLetter) === -1){
+			if(game.badLetters.indexOf(game.currentLetter) === -1) {
+				game.badLetters.push(game.currentLetter);
+				game.badLetters.sort();
 
-		else {
-			// incorrectLetters();
-			//TODO: incorporate logic if game.currentLetter is wrong
+				incorrectLetters();
+			}
 		}
-	};
+	}
+
+	console.log(game.goodLetters);
+	console.log(game.badLetters);
+	
 
 	showQuote();
+
+	$('#used span').html(game.badLetters + ", &emsp;");
 }
 
-// function incorrectLetters() {
-	
-// 		if(game.currentLetter !== game.triedLetters[i]) {
-// 			game.triedLetters.push(game.currentLetter);
-// 			console.log(game.triedLetters);
-// 		}
-	
-	
-// 	$('#used span').html(game.triedLetters);
+function repeatLetter() {
+ 	if(game.goodLetters.indexOf(game.currentLetter) === -1 && game.badLetters.indexOf(game.currentLetter) === -1){
+ 		compareInput();
+ 	}
+ 	else {
+ 		console.log("You already tried that letter");
+ 	}
+}
+
+function incorrectLetters() {
+	game.lives-=1;
+	numLives();
+}
+
+// function gameWin() {
+
 // }
+
+// function gameOver(){
+	
+// }
+
+function reset() {
+	game.triedLetters = [];
+	game.lives = 10; // should be 10
+}
