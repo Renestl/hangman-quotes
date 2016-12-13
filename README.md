@@ -7,3 +7,12 @@ Simple hangman game built as a submission for: https://forum.freecodecamp.com/t/
 Javascript
 jQuery
 Bootstrap
+
+### Credits / Attributions
+
+[@kornil](https://github.com/Kornil) Red Panda Favicon - [Github repositiory](https://github.com/Kornil/Red-Panda-FCC-Favicon)
+
+### Project links:
+* [Github Repository]()
+* [Project Plan]()
+* [Forum Post]()

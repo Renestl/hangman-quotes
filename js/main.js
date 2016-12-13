@@ -1,9 +1,15 @@
 window.onload = function() {
 	gameStart();
-}
+
+	$('#userInput').keydown(function(event) {
+		if(event.keyCode === 13) return false;
+	});
+
+};
 
 var game = {
-	quote: "This is where the quote will live",
+	quote: 'This is where the quote will live',
+	spaceCount: 0,
 	quoteLetters:[],
 	quoteLettersPlaceholder: [],
 	goodLetters: [],
@@ -12,24 +18,34 @@ var game = {
 	lives: 10, // should be 10
 	currentLetter: '',
 	guessed: false
-}
+};
+
+// ======================
+// Game Functions
+// ======================
 
 function gameStart() {
 	quoteSplit();
 	showQuote();
 	numLives();
 	userInput();
+	userReset();
 	console.log(game.quoteLetters);
 }
 
+// ======================
+// Quote
+// ======================
+
 function quoteSplit() {
 	game.quoteLetters = game.quote.toUpperCase().split('');
+	game.spaceCount = game.quote.split(' ').length - 1;	
 
 	for(var i = 0; i < game.quoteLetters.length; i++) {
-		if (game.quoteLetters[i] !== " ") {
+		if (game.quoteLetters[i] !== ' ') {
 			game.quoteLettersPlaceholder.push(game.placeholder + ' ');
 		} else {
-			game.quoteLettersPlaceholder.push("&emsp;");
+			game.quoteLettersPlaceholder.push('&emsp;');
 		}
 	}
 }	
@@ -38,54 +54,73 @@ function showQuote() {
 	$('#quoted').html(game.quoteLettersPlaceholder);
 }
 
-function numLives() {
-	$('#lives').html('You have ' + game.lives + ' lives left');
-}
+// ======================
+// Input
+// ======================
 
-function userInput() {
+function userInput(){
 	$('#guess').click(function() {
 		game.currentLetter = $('#userInput').val().toUpperCase();
 		
 		repeatLetter();
+		clearInput();
 	});
 }
 
-function compareInput() {
-	for (i = 0; i < game.quoteLetters.length; i++){
+function validLetter() {
+	var regex = /[a-zA-Z]/;
+	
+	if(!game.currentLetter.match(regex)){
+		alert('Please enter a letter (A-Z) only');
+	}
+}
 
-		if (game.currentLetter === game.quoteLetters[i]) {
+function compareInput() {
+	validLetter();
+	
+	for (var i = 0; i < game.quoteLetters.length; i++){
+
+		if (game.currentLetter === game.quoteLetters[i] && game.currentLetter !== ' ') {
 			game.quoteLettersPlaceholder[i] = game.quoteLetters[i].replace(game.placeholder, game.currentLetter);
 			
 			if(game.goodLetters.indexOf(game.currentLetter) === -1) {
 				game.goodLetters.push(game.currentLetter);
 			} 
+		
+			// gameWin();
 		} 
-		else if (game.currentLetter !== game.quoteLetters[i] && game.quoteLetters.indexOf(game.currentLetter) === -1){
+		else if (game.currentLetter !== game.quoteLetters[i] && game.quoteLetters.indexOf(game.currentLetter) === -1){			
 			if(game.badLetters.indexOf(game.currentLetter) === -1) {
 				game.badLetters.push(game.currentLetter);
 				game.badLetters.sort();
 
 				incorrectLetters();
+				gameOver();
 			}
 		}
 	}
 
-	console.log(game.goodLetters);
-	console.log(game.badLetters);
-	
-
 	showQuote();
 
-	$('#used span').html(game.badLetters + ", &emsp;");
+	$('#used span').html(game.badLetters + ', &emsp;');
 }
 
 function repeatLetter() {
- 	if(game.goodLetters.indexOf(game.currentLetter) === -1 && game.badLetters.indexOf(game.currentLetter) === -1){
- 		compareInput();
- 	}
- 	else {
- 		console.log("You already tried that letter");
- 	}
+	if(game.goodLetters.indexOf(game.currentLetter) === -1 && game.badLetters.indexOf(game.currentLetter) === -1){
+		compareInput();
+	}
+}
+
+function clearInput() {
+	$('#userInput').val('');
+}
+
+// ======================
+// Other Game Functions
+// ======================
+
+function numLives() {
+	$('#lives').html('You have ' + game.lives + ' lives left');
 }
 
 function incorrectLetters() {
@@ -94,14 +129,36 @@ function incorrectLetters() {
 }
 
 // function gameWin() {
+// 	if(game.lives > 0 ) {
+// 		console.log('you win');
+// 		$('body').css('background', 'green');
 
+// 		setTimeout(reset, 2000);
+// 	}
 // }
 
-// function gameOver(){
-	
-// }
+function gameOver(){
+	if(game.lives === 0) {
+		console.log('game over');
+		$('body').css('background', 'red');
+
+		setTimeout(reset, 2000);
+	}
+}
+
+function userReset(){
+	$('#reset').click(function() {
+		reset();
+	});
+}
 
 function reset() {
-	game.triedLetters = [];
 	game.lives = 10; // should be 10
+	game.triedLetters = [];
+	$('body').css('background', '#fff');	
+	numLives();
 }
+
+// ======================
+// API
+// ======================
