@@ -15,7 +15,7 @@ var game = {
 	goodLetters: [],
 	badLetters: [],
 	placeholder: '_',
-	lives: 10, // should be 10
+	lives: 2, // should be 10
 	currentLetter: '',
 	guessed: false
 };
@@ -95,6 +95,7 @@ function compareInput() {
 				game.badLetters.sort();
 
 				incorrectLetters();
+				drawPerson();
 				gameOver();
 			}
 		}
@@ -150,13 +151,47 @@ function userReset(){
 	$('#reset').click(function() {
 		reset();
 	});
+	
+	setTimeout(reset, 2000);
 }
 
 function reset() {
-	game.lives = 10; // should be 10
+	game.lives = 2; // should be 10
 	game.triedLetters = [];
 	$('body').css('background', '#fff');	
 	numLives();
+}
+
+// ======================
+// Hangman
+// ======================
+
+function drawLine(ctx, from, to) {
+    ctx.beginPath();
+    ctx.moveTo(from[0], from[1]);
+    ctx.lineTo(to[0], to[1]);
+    ctx.stroke();
+}
+
+function drawPerson() {
+	
+	var canvas = document.getElementById('person');
+	if(canvas.getContext) {
+		var	ctx = canvas.getContext('2d');
+	} else {
+	// canvas-unsupported code here
+		'The drawing of the Hangman should be here. Your browser might not be supported.';
+	}
+
+	canvas.style.width='70%';
+	canvas.style.height='50%';
+
+	// reset canvas and set basic styles
+	canvas.width = canvas.width;
+	// ctx.fillStyle = 'rgb(0,102,0)';
+
+	// ground
+	drawLine(ctx, [10,canvas.height-10], [canvas.width-10,canvas.height-10]);
 }
 
 // ======================
